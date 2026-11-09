@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDL 2026 hands-on guide: an evidence-first knowledge map</title>
+<style>
+  :root { --blue: #3C78D8; --ink: #222; --muted: #666; --line: #ddd; --pale: #f4f7fc; --amber: #F5A623; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--ink); line-height: 1.55; background: #fff; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 32px 24px 80px; }
+  header { border-bottom: 1px solid var(--line); padding-bottom: 18px; margin-bottom: 8px; }
+  h1 { color: var(--blue); font-size: 30px; margin: 0 0 6px; }
+  h2 { color: var(--blue); font-size: 23px; margin: 46px 0 10px; padding-top: 12px; border-top: 1px solid var(--line); }
+  h3 { font-size: 17px; margin: 24px 0 6px; }
+  p, li { font-size: 15.5px; }
+  .sub { color: var(--muted); margin: 0; }
+  nav.toc { background: var(--pale); border: 1px solid #dfe6f3; border-radius: 6px; padding: 12px 18px; margin: 20px 0; }
+  nav.toc ol { margin: 6px 0 0; padding-left: 20px; columns: 2; }
+  nav.toc a { color: var(--blue); text-decoration: none; }
+  figure { margin: 14px 0 22px; }
+  figure img { width: 100%; border: 1px solid var(--line); border-radius: 6px; display: block; }
+  figcaption { color: var(--muted); font-size: 13.5px; margin-top: 6px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 800px) { .two { grid-template-columns: 1fr; } nav.toc ol { columns: 1; } }
+  .idea { border-left: 4px solid var(--blue); background: var(--pale); padding: 8px 14px; margin: 10px 0 14px; }
+  .ask { border-left: 4px solid var(--amber); background: #fff8ec; padding: 8px 14px; margin: 14px 0; }
+  .steps { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 10px 18px 10px 34px; }
+  table { border-collapse: collapse; margin: 8px 0 14px; font-size: 14.5px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 5px 12px 5px 0; text-align: left; vertical-align: top; }
+  th { color: var(--muted); font-weight: normal; }
+  code, .k { font-family: Menlo, Consolas, monospace; font-size: 13px; background: #f1f1f1; padding: 1px 5px; border-radius: 4px; }
+  pre { font-family: Menlo, Consolas, monospace; font-size: 12.5px; background: #f6f6f6; border: 1px solid #eee; border-radius: 6px; padding: 10px 12px; overflow-x: auto; }
+  .btn { display: inline-block; background: var(--blue); color: #fff; border-radius: 5px; padding: 1px 9px; font-size: 13px; font-weight: bold; }
+  .btn2 { display: inline-block; border: 1px solid var(--blue); color: var(--blue); border-radius: 5px; padding: 0 8px; font-size: 13px; }
+  .num { color: var(--blue); font-weight: bold; }
+  .muted { color: var(--muted); }
+  footer { margin-top: 50px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>CDL 2026 hands-on: an evidence-first knowledge map</h1>
+  <p class="sub">Connected Data London, 11 November 2026. Weidong Yang (Kineviz) and Mengjia Kang. A step-by-step guide to the notebook <b>CDL Exercises</b> in the project <b>CDL2026_SEC10K</b>.</p>
+</header>
+
+<p><b>Bottom line:</b> you will open one project, open one notebook, and click through eight short exercises (plus an optional ninth). Each exercise has a button that loads a ready-made picture of the graph (a <i>view</i>), a live table, and one question to discuss. You don't need to write any queries.</p>
+
+<nav class="toc">
+  <b>Contents</b>
+  <ol>
+    <li><a href="#start">Get started</a></li>
+    <li><a href="#buttons">How the notebook works</a></li>
+    <li><a href="#e1">Exercise 1: follow a claim to its sentence</a></li>
+    <li><a href="#e2">Exercise 2: one document vs many</a></li>
+    <li><a href="#e3">Exercise 3: is our map bigger than the territory?</a></li>
+    <li><a href="#e4">Exercise 4: merge what is safe</a></li>
+    <li><a href="#e5">Exercise 5: AWS or Amazon?</a></li>
+    <li><a href="#e6">Exercise 6: where was the claim written? (recording vs query context)</a></li>
+    <li><a href="#e7">Exercise 7: a category the ontology did not have (dynamic ontology)</a></li>
+    <li><a href="#e8">Exercise 8: Facebook or Meta? (entity resolution with a date)</a></li>
+    <li><a href="#e9">Exercise 9: give the agent a purpose (optional)</a></li>
+    <li><a href="#schema">What is in the graph (schema)</a></li>
+    <li><a href="#words">Words used in this guide</a></li>
+    <li><a href="#trouble">If something looks wrong</a></li>
+  </ol>
+</nav>
+
+<h2 id="start">1. Get started</h2>
+<p>The graph was built from <b>2,068 SEC 10-K filings by 438 companies (2021&ndash;2025)</b>. An LLM read three sections of each filing (Business, Risk Factors, and Management's Discussion) and wrote down the competitors, risks, markets and opportunities it found. Every one of those claims keeps the sentence it came from and a link back to the filing.</p>
+<ol class="steps">
+  <li>Open the project <b>CDL2026_SEC10K</b> on <a href="https://cloud.kineviz.com">cloud.kineviz.com</a>. The start screen lists the exercise views under <i>Recent Views</i>; you can also open them from there.</li>
+  <li>Click the <b>Notebook</b> icon in the left-hand icon strip (an open book), then open <b>CDL Exercises.md</b>.</li>
+</ol>
+<div class="two">
+  <figure><img src="img/01-start.jpg" alt="Project start screen"><figcaption>The project start screen. The <i>CDL E&hellip;</i> views are the exercise views.</figcaption></figure>
+  <figure><img src="img/02-notebook.jpg" alt="Notebook intro"><figcaption>The notebook opens on the left; the graph canvas is on the right.</figcaption></figure>
+</div>
+
+<h2 id="buttons">2. How the notebook works</h2>
+<table>
+  <tr><th>You see</th><th>What it does</th></tr>
+  <tr><td><span class="btn">Open view E1</span></td><td>Loads a saved view (nodes, layout, colors) onto the canvas, next to the notebook. It replaces whatever is on the canvas.</td></tr>
+  <tr><td><span class="btn2">Hide notebook</span></td><td>Gives the view the whole screen. To come back, click the Notebook icon on the left.</td></tr>
+  <tr><td>&#9656; Cypher behind this view</td><td>Click to unfold the query that pulls the same data. Paste it into <b>Query</b> (top left) to run it yourself.</td></tr>
+  <tr><td>&#9656; Hints: build this view yourself</td><td>Short hints for building the view with Kineviz operators: Expand, Select, Ego tree, Distribute along Y, Shortcut, Merge, Filter, Color by. The hints are the exercise; the saved view is the answer.</td></tr>
+  <tr><td><span class="btn2">Load raw data</span></td><td>Inside the hints. Clears the canvas and loads the view's nodes without layout or styling, as a starting point.</td></tr>
+  <tr><td>Tables and big numbers</td><td>Live queries against the graph, run when the notebook opens.</td></tr>
+</table>
+<figure><img src="img/18-hints.jpg" alt="Hints and Load raw data"><figcaption>Exercise 6 with its hints open, after <b>Load raw data</b>: 32 unarranged nodes on the canvas, ready for Ego tree, Color by section and Filter.</figcaption></figure>
+
+<h2 id="e1">3. Exercise 1: follow a claim to its sentence <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<div class="idea"><b>Idea:</b> evidence first. A claim is only as good as the sentence behind it, so keep the quote and check it.</div>
+<p>Clear Secure (ticker YOU) runs identity lanes at airports. The LLM listed the competitors its 10-Ks name: <span class="num">31 claims</span>, backed by 26 quotes.</p>
+<ol class="steps">
+  <li>Click <span class="btn">Open view E1</span>. Left to right: the company, each competitor it named, and the quote behind each one.</li>
+  <li>In the table, pick 5 rows and click <b>check</b>. The SEC filing opens with the quote highlighted.</li>
+  <li>Mark each one: <b>A</b> word for word, <b>B</b> real words but cut and joined with "&hellip;", <b>C</b> not found.</li>
+</ol>
+<figure><img src="img/03-e1-notebook.jpg" alt="Exercise 1 in the notebook"><figcaption>Exercise 1 with the view loaded and the Cypher unfolded. The table lists every claim with its stored quote and a <b>check</b> link.</figcaption></figure>
+<figure><img src="img/04-e1-view.jpg" alt="Exercise 1 view"><figcaption>View E1 at full screen (<span class="btn2">Hide notebook</span>): Clear Secure &rarr; 31 competitor claims &rarr; the quotes behind them.</figcaption></figure>
+<figure><img src="img/05-e1-sec.jpg" alt="SEC filing with the quote highlighted"><figcaption>Clicking <b>check</b> on the 2024 "Big Tech" row. The highlighted sentence includes "<i>or well-known companies in the credit card industry</i>". The stored quote cut those words out and replaced them with "&hellip;".</figcaption></figure>
+<p>Code checked all 56,953 quotes in this graph: <span class="num">74%</span> are in the filing as one passage, <span class="num">24%</span> are real words cut and joined with "&hellip;", <span class="num">3%</span> could not be matched by machine.</p>
+<div class="ask"><b>Discuss:</b> does your sample of 5 look like 74 / 24 / 3? The cut in the 2024 quote dropped a whole group of competitors. The stored note was wrong, and only the source shows it.</div>
+
+<h2 id="e2">4. Exercise 2: one document vs many <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<div class="idea"><b>Idea:</b> a graph pays off when the answer is spread over many documents. Anthropic measured the same for agent memory: on questions that needed several documents, a linked map scored 87% against 73% for search alone; when one document had the answer, the map added nothing clear.</div>
+<ol class="steps">
+  <li>Ask a chatbot or search tool: <i>"What does Apple say about AI in its 2024 10-K?"</i> One filing has the answer; search does fine.</li>
+  <li>Ask the same tool: <i>"How many companies named Amazon as a competitor each year?"</i> The answer is spread over 2,068 filings.</li>
+  <li>Click <span class="btn">Open view E2</span> and read the table: the graph answers with one query.</li>
+</ol>
+<table>
+  <tr><th>Filing year</th><td>2021</td><td>2022</td><td>2023</td><td>2024</td><td>2025</td><td>2026</td></tr>
+  <tr><th>Companies naming Amazon</th><td>14</td><td>24</td><td>16</td><td>17</td><td>20</td><td>1</td></tr>
+</table>
+<p><span class="num">40</span> companies name Amazon in some form across all years.</p>
+<div class="two">
+  <figure><img src="img/06-e2-notebook.jpg" alt="Exercise 2 in the notebook"><figcaption>The count by year comes from one live query.</figcaption></figure>
+  <figure><img src="img/07-e2-view.jpg" alt="Exercise 2 view"><figcaption>View E2: 40 companies &rarr; each mention &rarr; the Amazon entities the mentions were merged into.</figcaption></figure>
+</div>
+<div class="ask"><b>Discuss:</b> why the jump in 2022? Open a few quotes and read them. Why is 2026 only 1? Only one 2026 filing is in the data so far. Every answer needs an "as of" date.</div>
+
+<h2 id="e3">5. Exercise 3: is our map bigger than the territory? <span class="muted" style="font-size:15px">(5 min)</span></h2>
+<div class="idea"><b>Idea:</b> signal to noise. <i>"If my knowledge graph is larger than my original information set, what do I gain?"</i> (Weidong Yang). Anthropic saw an agent build a wiki that grew larger than the documents it came from; it abstracted nothing.</div>
+<p>Scroll to Exercise 3. The notebook measures the text in our map against the filing sections it came from, live:</p>
+<table>
+  <tr><th>What</th><th>Characters</th><th>Share of the source</th></tr>
+  <tr><td>Source: Items 1, 1A and 7 of 2,068 filings</td><td>486,741,852</td><td>100%</td></tr>
+  <tr><td>Whole map (quotes, risks, markets, opportunities, competitors)</td><td>19,874,064</td><td><span class="num">4.1%</span></td></tr>
+  <tr><td>Quotes alone (56,953)</td><td>10,672,681</td><td><span class="num">2.2%</span></td></tr>
+</table>
+<figure><img src="img/08-e3.jpg" alt="Exercise 3"><figcaption>Our map holds about 1/25 of the text it was built from.</figcaption></figure>
+<div class="ask"><b>Discuss:</b> suppose we also extracted every product, person, place and number. When would the map pass 100%, and what would we gain? At the analysis step the LLM should get a short set of high-quality evidence, not every document. Picking that set is the map's job.</div>
+
+<h2 id="e4">6. Exercise 4: merge what is safe, find what the merge missed <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<div class="idea"><b>Idea:</b> some merges are right for any question, so they can be done up front, as a background pass. Anthropic calls such a pass "dreaming": reread the sources, merge duplicates, fix links.</div>
+<p>When the graph was built, a background pass grouped 14,572 competitor names into 5,455 entities.</p>
+<ol class="steps">
+  <li>Click <span class="btn">Open view E4a: Walmart</span>. <span class="num">67 mentions</span> in 5 spellings all point to one Walmart: "Walmart" 41, "Walmart Inc." 20, "Walmart, Inc." 4, and two combined mentions.</li>
+  <li>Click <span class="btn">Open view E4b: Amazon</span>. <span class="num">17 entities</span> have "Amazon" in the name. "Amazon" and "Amazon.com, Inc." were never merged; the two AWS spellings were never merged; "Amazon and Google" was never split.</li>
+  <li>In the Amazon table, mark each entity: <b>merge now</b> (same company for any question), <b>wait</b> (depends on the question), or <b>split</b> (one name holding several companies).</li>
+</ol>
+<figure><img src="img/09-e4a.jpg" alt="Exercise 4 Walmart"><figcaption>View E4a next to the notebook: the mentions grouped by how the filing spelled Walmart.</figcaption></figure>
+<figure><img src="img/10-e4b-view.jpg" alt="Exercise 4 Amazon"><figcaption>View E4b: each Amazon entity sits beside the mentions merged into it. Three big bundles, and many entities that should not exist on their own.</figcaption></figure>
+<div class="ask"><b>Discuss:</b> which of the 17 would you merge for every question? Which only for some questions? The second group is exercise 5.</div>
+
+<h2 id="e5">7. Exercise 5: AWS or Amazon? The question decides <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<div class="idea"><b>Idea:</b> just-in-time entity resolution. Whether AWS counts as Amazon depends on the question, so we resolve it when the question arrives, not when the data loads.</div>
+<ol class="steps">
+  <li>Click <span class="btn">Open view E5</span>. Companies on the left; Amazon retail entities in orange, AWS in blue.</li>
+  <li><i>"Who names AWS as a cloud rival?"</i> Count only the blue side: <span class="num">11 companies</span>.</li>
+  <li><i>"How many companies compete with Amazon in any form?"</i> Count everything: <span class="num">40</span>.</li>
+</ol>
+<div class="two">
+  <figure><img src="img/11-e5-notebook.jpg" alt="Exercise 5 in the notebook"><figcaption>Two questions, two right answers, from the same evidence.</figcaption></figure>
+  <figure><img src="img/12-e5-view.jpg" alt="Exercise 5 view"><figcaption>View E5 at full screen: the AWS (blue) and Amazon retail (orange) sides.</figcaption></figure>
+</div>
+<div class="ask"><b>Discuss:</b> if we had merged AWS into Amazon when the data loaded, which of the two questions could we no longer answer?</div>
+
+<h2 id="e6">8. Exercise 6: where was the claim written? Recording context vs query context <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<div class="idea"><b>Idea:</b> every claim carries its <b>recording context</b> (provenance): who wrote it, when, where in the document, in what words. The question brings the <b>query context</b>: who is asking, and for what. Keep the first with the claim; let the second decide which claims count.</div>
+<p>All 31 Clear Secure claims were extracted as "competitor". But they were written in three different places, and mean three different things:</p>
+<table>
+  <tr><th>Section</th><th>Claims</th><th>What it is about</th><th>Example, in the filing's own words</th></tr>
+  <tr><td>Item 1, Business</td><td class="num">6</td><td>competitors today</td><td>Offline alternatives: "Primary competitors providing manual security and screening processes"</td></tr>
+  <tr><td>Item 1A, Risk Factors</td><td class="num">17</td><td>possible future competitors</td><td>Big Tech: "Potential direct competitors who could leverage existing platforms"</td></tr>
+  <tr><td>Item 7, MD&amp;A</td><td class="num">8</td><td>partners and acquisitions</td><td>United Airlines: "Strategic partner"; Whyline: "Acquired entity"</td></tr>
+</table>
+<ol class="steps">
+  <li>Click <span class="btn">Open view E6</span>. Claims are grouped and colored by section: blue Item 1, amber Item 1A, purple Item 7.</li>
+  <li>Answer three questions from the same 31 claims. A sales team asks <i>"Who does Clear Secure compete with today?"</i>: use Item 1. An investor asks <i>"Who could become a competitor?"</i>: use Item 1A. A deal team asks <i>"Who does Clear Secure depend on?"</i>: use Item 7. Those are not competitors at all.</li>
+</ol>
+<div class="two">
+  <figure><img src="img/15-e6-notebook.jpg" alt="Exercise 6 in the notebook"><figcaption>Claims per section, and what the filing says about each one.</figcaption></figure>
+  <figure><img src="img/15-e6-view.jpg" alt="Exercise 6 view"><figcaption>View E6: one company, 31 "competitor" claims in three color bands by section.</figcaption></figure>
+</div>
+<div class="ask"><b>Discuss:</b> a graph that kept only the edge <code>Clear Secure -COMPETES_WITH-&gt; United Airlines</code> would answer all three questions the same way, and two of them wrong.</div>
+
+<h2 id="e7">9. Exercise 7: a category the ontology did not have (dynamic ontology) <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<div class="idea"><b>Idea:</b> the ontology is a lens applied when the question arrives, not a box filled once. Keep the evidence; add or change categories as versions, without re-extracting anything.</div>
+<p>The risk ontology in this graph was fixed up front: 17 categories, one of them "AI &amp; Emerging Technology". Generative AI barely existed as a business risk in 2021 (ChatGPT launched in November 2022). The fixed category is several times too broad to answer <i>"Which companies worry about generative AI?"</i>, so we define a new category from the kept text, at question time:</p>
+<table>
+  <tr><th>Filing year</th><th>Companies with an "AI &amp; Emerging Technology" risk (fixed, v1)</th><th>Companies with a generative-AI risk (defined now, v2)</th></tr>
+  <tr><td>2021</td><td>83</td><td>0</td></tr>
+  <tr><td>2022</td><td>104</td><td>2</td></tr>
+  <tr><td>2023</td><td>244</td><td class="num">51</td></tr>
+  <tr><td>2024</td><td>322</td><td class="num">94</td></tr>
+  <tr><td>2025</td><td>364</td><td class="num">90</td></tr>
+</table>
+<p>The generative-AI risks were filed under 11 different fixed categories: 265 under AI &amp; Emerging Technology, but also 57 under Cybersecurity, 25 under Legal &amp; Litigation, 21 under Competition (one risk can sit in several).</p>
+<div class="two">
+  <figure><img src="img/16-e7-notebook.jpg" alt="Exercise 7 in the notebook"><figcaption>Version 1 (fixed category) next to version 2 (defined at question time), by year.</figcaption></figure>
+  <figure><img src="img/16-e7-view.jpg" alt="Exercise 7 view"><figcaption>View E7 (2023 filings): 51 companies, one dot per generative-AI risk, fanning out to the fixed categories they were filed under.</figcaption></figure>
+</div>
+<div class="ask"><b>Discuss:</b> is "generative AI" a type of risk, or a theme that cuts across types (cyber attacks, lawsuits, competition)? With a fixed ontology someone had to decide in advance. Here the question decides, and the answer can be checked against the quotes.</div>
+
+<h2 id="e8">10. Exercise 8: Facebook or Meta? Entity resolution with a date <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<div class="idea"><b>Idea:</b> just-in-time entity resolution. Whether two names are one thing depends on the question, and which name is right depends on the date. Store the dated mentions once; decide when the question arrives.</div>
+<p>Facebook, Inc. renamed itself Meta Platforms on 28 October 2021. Filings kept using both names for years: Sirius XM still writes "Facebook" in 2025. The graph keeps two entities, Facebook and Meta.</p>
+<table>
+  <tr><th>Question</th><th>Answer</th></tr>
+  <tr><td>Companies naming the <b>Meta</b> entity</td><td class="num">4</td></tr>
+  <tr><td>Companies naming the <b>Facebook</b> entity</td><td class="num">5</td></tr>
+  <tr><td>"Which companies name Meta as a competitor?" (Facebook = Meta, same company)</td><td class="num">8</td></tr>
+  <tr><td>"Which companies talk about the Facebook app itself?"</td><td>keep them apart</td></tr>
+</table>
+<div class="two">
+  <figure><img src="img/17-e8-notebook.jpg" alt="Exercise 8 in the notebook"><figcaption>Every mention with its filing year and the entity it landed on.</figcaption></figure>
+  <figure><img src="img/17-e8-view.jpg" alt="Exercise 8 view"><figcaption>View E8: AT&amp;T, Block, News Corp and Sirius XM say "Facebook"; Alphabet, Clear Secure and EA say "Meta"; eBay uses both.</figcaption></figure>
+</div>
+<div class="ask"><b>Discuss:</b> Clear Secure's 2021 mention reads "Big Tech (Amazon, Apple, <b>Facebook</b>, Google)" but landed on Meta; eBay's 2021 "Facebook (Meta)" landed on Facebook. Errors, or two different things (the app vs the company)? Compare with exercise 5: AWS vs Amazon is about the question; Facebook vs Meta is also about the date.</div>
+
+<h2 id="e9">11. Exercise 9: give the agent a purpose, not a rule <span class="muted" style="font-size:15px">(optional)</span></h2>
+<div class="idea"><b>Idea:</b> Anthropic found that telling a model what memory is <i>for</i> worked better than fixed rules on <i>how</i> to use it. The same holds for an ontology.</div>
+<ol class="steps">
+  <li>Open the <b>Agent</b> panel (speech-bubble icon on the left).</li>
+  <li>In one chat ask: <i>"How many competitors does Apple have?"</i></li>
+  <li>Start a new chat (<b>+</b>) and ask: <i>"I'm sizing Apple's cloud competition for a board memo. How many competitors does Apple have?"</i></li>
+</ol>
+<div class="ask"><b>Compare:</b> does it count mentions, entities or parent companies? Does it say which? Does it ask you before answering? Answers vary from run to run.</div>
+
+<h2 id="schema">12. What is in the graph (schema)</h2>
+<p>A second notebook, <b>CDL Schema.md</b>, defines every kind of node and relationship in plain words, with live counts. Its button <span class="btn">Draw one example of everything</span> puts one real example of all 12 node types on the canvas.</p>
+<table>
+  <tr><th>Layer</th><th>Nodes</th><th>In plain words</th></tr>
+  <tr><td><b>Source</b></td><td>Company, Document, Section, Reference</td><td>The filings themselves, down to the quoted sentence (Reference). This is the evidence.</td></tr>
+  <tr><td><b>Claims</b></td><td>Competitor, Risk, Market, Opportunity</td><td>What the LLM says each filing says. One node per mention.</td></tr>
+  <tr><td><b>Normalization</b></td><td>NormalizedCompetitor, RiskCategory, MarketCategory, GeographicRegion</td><td>Groups added afterwards, so you can count across filings. A judgment, not a fact.</td></tr>
+</table>
+<div class="two">
+  <figure><img src="img/13-schema.jpg" alt="Schema notebook"><figcaption>The schema notebook.</figcaption></figure>
+  <figure><img src="img/14-schema-draw.jpg" alt="Schema drawing"><figcaption>One example of every node type: 21 nodes of 12 kinds.</figcaption></figure>
+</div>
+
+<h2 id="words">13. Words used in this guide</h2>
+<table>
+  <tr><th>Word</th><th>In plain words</th><th>Example</th></tr>
+  <tr><td>Node</td><td>One thing in the graph.</td><td>The company Clear Secure; one quote.</td></tr>
+  <tr><td>Relationship</td><td>A typed link between two nodes.</td><td><code>COMPETES_WITH</code> from Clear Secure to "United Airlines".</td></tr>
+  <tr><td>Claim</td><td>Something the LLM says a filing says.</td><td>"Clear Secure competes with Big Tech Platforms."</td></tr>
+  <tr><td>Reference (quote)</td><td>The sentence from the filing that backs a claim, with a link that opens the filing at that sentence.</td><td>"For example, large, well-established technology platforms&hellip;"</td></tr>
+  <tr><td>Mention vs entity</td><td>A mention is a name as written in one filing; an entity is the real-world thing several mentions refer to.</td><td>"Walmart Inc." (mention) &rarr; Walmart (entity).</td></tr>
+  <tr><td>Entity resolution</td><td>Deciding which mentions are the same real-world thing.</td><td>Is "AWS" the same as "Amazon"?</td></tr>
+  <tr><td>View</td><td>A saved picture of the canvas: nodes, layout, colors.</td><td>CDL E5 &ndash; AWS or Amazon.</td></tr>
+  <tr><td>Recording context (provenance)</td><td>Where, when, by whom and in what words a claim was written. It travels with the claim.</td><td>Clear Secure 10-K 2024, Item 1A, "potential direct competitors".</td></tr>
+  <tr><td>Query context</td><td>Who is asking, and for what purpose. It comes with the question.</td><td>A deal team asking who Clear Secure depends on.</td></tr>
+  <tr><td>Ontology</td><td>The list of kinds of things and links the graph uses.</td><td>The 17 risk categories.</td></tr>
+  <tr><td>Dynamic ontology</td><td>Categories defined or changed when the question arrives, as new versions, over evidence that stays the same.</td><td>"Generative AI risk", defined from the risk text in 2026.</td></tr>
+  <tr><td>Just-in-time entity resolution</td><td>Deciding whether two names are one thing at question time, using the question and the date.</td><td>Facebook = Meta for "who names Meta?"; apart for "who talks about the Facebook app?".</td></tr>
+  <tr><td>Cypher</td><td>The query language the graph understands.</td><td><code>MATCH (c:Company) RETURN c LIMIT 5</code></td></tr>
+</table>
+
+<h2 id="trouble">14. If something looks wrong</h2>
+<table>
+  <tr><th>You see</th><th>Do this</th></tr>
+  <tr><td>The notebook shows editing tools and wide margins</td><td>It opened in edit mode. Click the pencil icon at the top of the notebook to switch back to reading mode.</td></tr>
+  <tr><td>A view is squeezed next to the notebook</td><td>Click <span class="btn2">Hide notebook</span>; the view gets the full screen. Click the Notebook icon on the left to return.</td></tr>
+  <tr><td>A <b>check</b> link opens the filing but doesn't jump to the quote</td><td>10-K pages are large; wait for the page to finish loading. If it still doesn't jump, the quote was cut so heavily that the browser can't find it: that is a <b>B</b> or <b>C</b> in exercise 1.</td></tr>
+  <tr><td>Counts differ slightly from this guide</td><td>The notebook queries the graph live; small differences mean the data was updated after this guide was written (8 Nov 2026).</td></tr>
+</table>
+
+<footer>
+  Sources: graph counts from live queries on CDL2026_SEC10K and <code>materials/04_sec_10k/size_check/</code>; quote check from <code>materials/04_sec_10k/quote_check/</code>; Anthropic figures from "The components of agent memory" (Lance Martin, 6 Nov 2026), <code>materials/08_agent_memory/</code>.
+</footer>
+
+</div>
+</body>
+</html>
