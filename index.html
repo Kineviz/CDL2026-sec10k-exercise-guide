@@ -61,7 +61,7 @@
     <li><a href="#e6">Exercise 6: where was the claim written? (recording vs query context)</a></li>
     <li><a href="#e7">Exercise 7: a category the ontology did not have (dynamic ontology)</a></li>
     <li><a href="#e8">Exercise 8: Facebook or Meta? (entity resolution with a date)</a></li>
-    <li><a href="#e9">Exercise 9: write a skill that gives the agent a purpose (optional)</a></li>
+    <li><a href="#e9">Exercise 9: build a skill with the agent (optional)</a></li>
     <li><a href="#schema">What is in the graph (schema)</a></li>
     <li><a href="#words">Words used in this guide</a></li>
     <li><a href="#trouble">If something looks wrong</a></li>
@@ -213,34 +213,26 @@
 </div>
 <div class="ask"><b>Discuss:</b> Clear Secure's 2021 mention reads "Big Tech (Amazon, Apple, <b>Facebook</b>, Google)" but landed on Meta; eBay's 2021 "Facebook (Meta)" landed on Facebook. Errors, or two different things (the app vs the company)? Compare with exercise 5: AWS vs Amazon is about the question; Facebook vs Meta is also about the date.</div>
 
-<h2 id="e9">11. Exercise 9: write a skill that gives the agent a purpose, not a rule <span class="muted" style="font-size:15px">(optional)</span></h2>
-<div class="idea"><b>Idea:</b> Anthropic found that telling a model what memory is <i>for</i> worked better than fixed rules on <i>how</i> to use it. Here you don't just ask the agent. You write the skill that shapes how it answers.</div>
+<h2 id="e9">11. Exercise 9: build a skill with the agent that gives it a purpose, not a rule <span class="muted" style="font-size:15px">(optional)</span></h2>
+<div class="idea"><b>Idea:</b> Anthropic found that telling a model what memory is <i>for</i> worked better than fixed rules on <i>how</i> to use it. Here you don't just ask the agent questions. You work with it to write the skill that shapes how it answers.</div>
 <p>A <b>skill</b> is a short markdown file the in-app agent reads before it answers. It lives in Project Files under <code>.agents/skills/&lt;name&gt;/SKILL.md</code>. The project already has two: <code>company-competitor-profiler</code> and <code>company-risk-analyst</code>.</p>
 <ol class="steps">
   <li><b>Before:</b> open the <b>Agent</b> panel (speech-bubble icon on the left). In one chat ask <i>"How many competitors does Apple have?"</i> Start a new chat (<b>+</b>) and ask <i>"I'm sizing Apple's cloud competition for a board memo. How many competitors does Apple have?"</i> Note what it counted.</li>
-  <li>Open <code>.agents/skills/company-risk-analyst/SKILL.md</code> in the <b>Files</b> panel. Mostly it is a recipe: steps, queries, categories. That is a rule.</li>
-  <li>Write your own skill in a new folder, for example <code>.agents/skills/&lt;your-initials&gt;-competitor-count/SKILL.md</code>. Describe the purpose: who asks this question, what the answer is for, and what a good answer must show.</li>
+  <li><b>Build the skill together:</b> in a new chat, describe how you want the agent to answer questions like these. Say it in your own words: who asks, what the answer is for, and what a good answer must show. Then ask it to create a skill that captures this, named <code>&lt;your-initials&gt;-competitor-count</code>.</li>
+  <li><b>Review the skill:</b> ask it to show you what it wrote. Push back where it turned your purpose into rules or queries, and have it update the skill.</li>
   <li><b>After:</b> start a new chat and ask the same two questions again.</li>
 </ol>
-<details><summary><b>Hint:</b> a skeleton to start from (fill in the blanks yourself)</summary>
-<pre>---
-name: &lt;your-initials&gt;-competitor-count
-description: Use when someone asks how many competitors a company has,
-  or who a company competes with.
----
-
-# Why people ask this
-...who asks, and what decision the answer feeds...
-
-# What "competitor" can mean in this graph
-...a mention in one filing, an entity, a parent company...
-
-# What a good answer shows
-...which meaning you counted and why, the quotes behind it,
-   and when to ask the user before answering...</pre>
-<p>The <code>description</code> line decides when the agent picks up the skill, so name the question in it. Try to write no queries and no step lists. Compare a rule like <i>"Count NormalizedCompetitor nodes and return the number"</i> with a purpose like <i>"The answer goes into a decision, so say which count you used and why it fits the question"</i>.</p>
+<details><summary><b>Hint:</b> what to tell the agent, and what to watch for</summary>
+<ul>
+  <li>Tell it why people ask: a board memo, a deal, a market scan. Each needs a different count.</li>
+  <li>Ask it what "competitor" can mean in this graph: a mention in one filing, an entity, a parent company. Let it look at the schema and tell you.</li>
+  <li>Tell it what a good answer shows: which meaning it counted and why, the quotes behind it, and when to ask you first.</li>
+  <li>Watch the draft for rules like <i>"Count NormalizedCompetitor nodes and return the number"</i>. Ask for a purpose instead, like <i>"The answer goes into a decision, so say which count you used and why it fits the question"</i>.</li>
+  <li>The skill's <code>description</code> line decides when the agent uses it. Check that it names the question.</li>
+  <li>Compare with <code>company-risk-analyst/SKILL.md</code>: it is mostly a recipe of steps and queries.</li>
+</ul>
 </details>
-<div class="ask"><b>Compare before and after:</b> does the plain question now get a question back? Does the board-memo question get a different count, and does the agent say why? What did you have to tell the agent about the graph, and what about the purpose? If the schema changed tomorrow, which parts of your skill would still be right?</div>
+<div class="ask"><b>Compare before and after:</b> does the plain question now get a question back? Does the board-memo question get a different count, and does the agent say why? Where did the agent turn your purpose into rules, and did that help? If the schema changed tomorrow, which parts of the skill would still be right?</div>
 <p class="muted">Sharing a project with others? Put your initials in the folder name. Everyone's agent sees every skill in the project, which is a discussion of its own.</p>
 
 <h2 id="schema">12. What is in the graph (schema)</h2>
