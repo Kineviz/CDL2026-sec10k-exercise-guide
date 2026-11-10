@@ -61,7 +61,7 @@
     <li><a href="#e6">Exercise 6: where was the claim written? (recording vs query context)</a></li>
     <li><a href="#e7">Exercise 7: a category the ontology did not have (dynamic ontology)</a></li>
     <li><a href="#e8">Exercise 8: Facebook or Meta? (entity resolution with a date)</a></li>
-    <li><a href="#e9">Exercise 9: build a skill with the agent (optional)</a></li>
+    <li><a href="#e9">Exercise 9: give the agent a purpose (optional)</a></li>
     <li><a href="#schema">What is in the graph (schema)</a></li>
     <li><a href="#words">Words used in this guide</a></li>
     <li><a href="#trouble">If something looks wrong</a></li>
@@ -213,14 +213,15 @@
 </div>
 <div class="ask"><b>Discuss:</b> Clear Secure's 2021 mention reads "Big Tech (Amazon, Apple, <b>Facebook</b>, Google)" but landed on Meta; eBay's 2021 "Facebook (Meta)" landed on Facebook. Errors, or two different things (the app vs the company)? Compare with exercise 5: AWS vs Amazon is about the question; Facebook vs Meta is also about the date.</div>
 
-<h2 id="e9">11. Exercise 9: build a skill with the agent that gives it a purpose, not a rule <span class="muted" style="font-size:15px">(optional)</span></h2>
-<div class="idea"><b>Idea:</b> Anthropic found that telling a model what memory is <i>for</i> worked better than fixed rules on <i>how</i> to use it. Here you don't just ask the agent questions. You work with it to write the skill that shapes how it answers.</div>
+<h2 id="e9">11. Exercise 9: give the agent a purpose, not a rule <span class="muted" style="font-size:15px">(optional)</span></h2>
+<div class="idea"><b>Idea:</b> Anthropic found that telling a model what memory is <i>for</i> worked better than fixed rules on <i>how</i> to use it. The same holds for an ontology, and for the agent itself.</div>
 <p>A <b>skill</b> is a short markdown file the in-app agent reads before it answers. It lives in Project Files under <code>.agents/skills/&lt;name&gt;/SKILL.md</code>. The project already has two: <code>company-competitor-profiler</code> and <code>company-risk-analyst</code>.</p>
 <ol class="steps">
-  <li><b>Before:</b> open the <b>Agent</b> panel (speech-bubble icon on the left). In one chat ask <i>"How many competitors does Apple have?"</i> Start a new chat (<b>+</b>) and ask <i>"I'm sizing Apple's cloud competition for a board memo. How many competitors does Apple have?"</i> Note what it counted.</li>
-  <li><b>Build the skill together:</b> in a new chat, describe how you want the agent to answer questions like these. Say it in your own words: who asks, what the answer is for, and what a good answer must show. Then ask it to create a skill that captures this, named <code>&lt;your-initials&gt;-competitor-count</code>.</li>
-  <li><b>Review the skill:</b> ask it to show you what it wrote. Push back where it turned your purpose into rules or queries, and have it update the skill.</li>
-  <li><b>After:</b> start a new chat and ask the same two questions again.</li>
+  <li>Open the <b>Agent</b> panel (speech-bubble icon on the left). In one chat ask <i>"How many competitors does Apple have?"</i> Start a new chat (<b>+</b>) and ask <i>"I'm sizing Apple's cloud competition for a board memo. How many competitors does Apple have?"</i></li>
+  <li>Then ask the agent: <i>"Are you getting the right result?"</i> Judge for yourself too: did it count mentions, entities or parent companies? Did it say which, and did it ask you before answering?</li>
+  <li>If not, consider building a skill to give the agent the purpose behind these questions. In a new chat, describe how you want it to answer, in your own words: who asks, what the answer is for, and what a good answer must show. Then ask it to create a skill that captures this, named <code>&lt;your-initials&gt;-competitor-count</code>.</li>
+  <li>Ask it to show you the skill. Push back where it turned your purpose into rules or queries, and have it update the skill.</li>
+  <li>Start a new chat and ask the same two questions again.</li>
 </ol>
 <details><summary><b>Hint:</b> what to tell the agent, and what to watch for</summary>
 <ul>
