@@ -61,7 +61,7 @@
     <li><a href="#e4">Exercise 4: merge what is safe</a></li>
     <li><a href="#e5">Exercise 5: AWS or Amazon?</a></li>
     <li><a href="#e6">Exercise 6: competitor, target, or former partner? (recording vs query context)</a></li>
-    <li><a href="#e7">Exercise 7: a category the ontology did not have (dynamic ontology)</a></li>
+    <li><a href="#e7">Exercise 7: add a new category as the situation changes (dynamic ontology)</a></li>
     <li><a href="#e8">Exercise 8: Facebook or Meta? (entity resolution with a date)</a></li>
     <li><a href="#e9">Exercise 9: give the agent a purpose (optional)</a></li>
     <li><a href="#schema">What is in the graph (schema)</a></li>
@@ -188,9 +188,11 @@
 <p><b>Why the extractor called them all competitors:</b> our own prompt asked for <code>competitors</code> with a free-text <code>relationship</code> field and never said what a competitor is. Across the whole graph, only 34% of the 3,145 Item 7 "competitors" are described as competing or rivals (Item 1: 77%, Item 1A: 66%); most of the rest read like partners (851) and acquisitions (401). The quote check in Exercise 1 cannot catch this, so the eval loop needs a second check on meaning.</p>
 <div class="ask"><b>Discuss:</b> a graph that kept only the edge <code>JetBlue -COMPETES_WITH-&gt; Spirit</code> would give all three questions the same answer. Compare Exercise 8: there the name changes over time; here the relationship does.</div>
 
-<h2 id="e7">9. Exercise 7: a category the ontology did not have (dynamic ontology) <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<h2 id="e7">9. Exercise 7: evolving the ontology to add a new category as the situation changes (dynamic ontology) <span class="muted" style="font-size:15px">(10 min)</span></h2>
 <div class="idea"><b>Idea:</b> the ontology is a lens applied when the question arrives, not a box filled once. Keep the evidence; add or change categories as versions, without re-extracting anything.</div>
-<p>The risk ontology in this graph was fixed up front: 17 categories, one of them "AI &amp; Emerging Technology". Generative AI barely existed as a business risk in 2021 (ChatGPT launched in November 2022). The fixed category is several times too broad to answer <i>"Which companies worry about generative AI?"</i>, so we define a new category from the kept text, at question time:</p>
+<p>The risk ontology started with 17 categories, including "AI &amp; Emerging Technology". That worked well in 2021, when generative AI barely existed as a business risk (ChatGPT launched in November 2022). Two years later almost a hundred companies cited it.</p>
+<p>With this first ontology we have a hard time answering questions like <i>"Which companies worry about generative AI?"</i> Several categories are related to it. This calls for an adjustment to the ontology: add "Generative AI" as a new category. Because every extracted risk node keeps its original text, this can be done as a "dreaming" step: reprocess past information with the new knowledge, at low cost.</p>
+<p><b>Try this:</b> open view E7 (2023 filings). It lists the companies that cited generative AI as a risk. Notice how it overlaps with other categories.</p>
 <table>
   <tr><th>Filing year</th><th>Companies with an "AI &amp; Emerging Technology" risk (fixed, v1)</th><th>Companies with a generative-AI risk (defined now, v2)</th></tr>
   <tr><td>2021</td><td>83</td><td>0</td></tr>
