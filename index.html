@@ -58,7 +58,7 @@
     <li><a href="#e3">Exercise 3: is our map bigger than the territory?</a></li>
     <li><a href="#e4">Exercise 4: merge what is safe</a></li>
     <li><a href="#e5">Exercise 5: AWS or Amazon?</a></li>
-    <li><a href="#e6">Exercise 6: where was the claim written? (recording vs query context)</a></li>
+    <li><a href="#e6">Exercise 6: competitor, target, or former partner? (recording vs query context)</a></li>
     <li><a href="#e7">Exercise 7: a category the ontology did not have (dynamic ontology)</a></li>
     <li><a href="#e8">Exercise 8: Facebook or Meta? (entity resolution with a date)</a></li>
     <li><a href="#e9">Exercise 9: give the agent a purpose (optional)</a></li>
@@ -82,6 +82,7 @@
 <h2 id="buttons">2. How the notebook works</h2>
 <table>
   <tr><th>You see</th><th>What it does</th></tr>
+  <tr><td><span class="btn">Start</span> <span class="btn2">1 Quote</span> <span class="btn2">2 One doc vs many</span> &hellip;</td><td>Tabs at the top of the notebook. Each exercise has its own tab. Clicking a row in the exercise table on the Start tab also opens it, and each exercise ends with a <b>Next</b> button.</td></tr>
   <tr><td><span class="btn">Open view E1</span></td><td>Loads a saved view (nodes, layout, colors) onto the canvas, next to the notebook. It replaces whatever is on the canvas.</td></tr>
   <tr><td><span class="btn2">Hide notebook</span></td><td>Gives the view the whole screen. To come back, click the Notebook icon on the left.</td></tr>
   <tr><td>&#9656; Cypher behind this view</td><td>Click to unfold the query that pulls the same data. Paste it into <b>Query</b> (top left) to run it yourself.</td></tr>
@@ -89,7 +90,7 @@
   <tr><td><span class="btn2">Load raw data</span></td><td>Inside the hints. Clears the canvas and loads the view's nodes without layout or styling, as a starting point.</td></tr>
   <tr><td>Tables and big numbers</td><td>Live queries against the graph, run when the notebook opens.</td></tr>
 </table>
-<figure><img src="img/18-hints.jpg" alt="Hints and Load raw data"><figcaption>Exercise 6 with its hints open, after <b>Load raw data</b>: 32 unarranged nodes on the canvas, ready for Ego tree, Color by section and Filter.</figcaption></figure>
+<figure><img src="img/18-hints.jpg" alt="Hints and Load raw data"><figcaption>An exercise with its hints open, after <b>Load raw data</b>: unarranged nodes on the canvas, ready for Ego tree, Color by and Filter.</figcaption></figure>
 
 <h2 id="e1">3. Exercise 1: follow a claim to its sentence <span class="muted" style="font-size:15px">(10 min)</span></h2>
 <div class="idea"><b>Idea:</b> evidence first. A claim is only as good as the sentence behind it, so keep the quote and check it.</div>
@@ -160,24 +161,27 @@
 </div>
 <div class="ask"><b>Discuss:</b> if we had merged AWS into Amazon when the data loaded, which of the two questions could we no longer answer?</div>
 
-<h2 id="e6">8. Exercise 6: where was the claim written? Recording context vs query context <span class="muted" style="font-size:15px">(10 min)</span></h2>
-<div class="idea"><b>Idea:</b> every claim carries its <b>recording context</b> (provenance): who wrote it, when, where in the document, in what words. The question brings the <b>query context</b>: who is asking, and for what. Keep the first with the claim; let the second decide which claims count.</div>
-<p>All 31 Clear Secure claims were extracted as "competitor". But they were written in three different places, and mean three different things:</p>
+<h2 id="e6">8. Exercise 6: competitor, target, or former partner? Recording context vs query context <span class="muted" style="font-size:15px">(10 min)</span></h2>
+<div class="idea"><b>Idea:</b> every claim carries its <b>recording context</b> (provenance): who wrote it, when, where in the document, in what words. The question brings the <b>query context</b>: who is asking, about which date, and for what. Keep the first with the claim; let the second decide which claims count.</div>
+<p>JetBlue's 10-Ks name Spirit Airlines in 9 claims from 2021 to 2025. The pipeline stored every one as a competitor (<code>COMPETES_WITH</code>). The filings say four different things:</p>
 <table>
-  <tr><th>Section</th><th>Claims</th><th>What it is about</th><th>Example, in the filing's own words</th></tr>
-  <tr><td>Item 1, Business</td><td class="num">6</td><td>competitors today</td><td>Offline alternatives: "Primary competitors providing manual security and screening processes"</td></tr>
-  <tr><td>Item 1A, Risk Factors</td><td class="num">17</td><td>possible future competitors</td><td>Big Tech: "Potential direct competitors who could leverage existing platforms"</td></tr>
-  <tr><td>Item 7, MD&amp;A</td><td class="num">8</td><td>partners and acquisitions</td><td>United Airlines: "Strategic partner"; Whyline: "Acquired entity"</td></tr>
+  <tr><th>Filing year</th><th>Sections</th><th>Spirit is</th><th>In the filing's own words</th></tr>
+  <tr><td>2021</td><td>Item 1, 1A</td><td>a competitor</td><td>Spirit filed a complaint with the DOT about JetBlue's alliance with American; Spirit and Frontier announced an intention to merge</td></tr>
+  <tr><td>2022</td><td>Items 1, 1A, 7</td><td>an acquisition target</td><td>"On July 28, 2022, we entered into a Merger Agreement with Spirit, pursuant to which we would acquire Spirit."</td></tr>
+  <tr><td>2023</td><td>Item 1A, 7</td><td>a blocked merger</td><td>"the Court issued its Final Judgment and Order granting the plaintiffs' request for a permanent injunction of the Merger"</td></tr>
+  <tr><td>2024-25</td><td>Item 7</td><td>a terminated deal</td><td>"write off of Spirit-related costs for $532 million as a result of the termination of the Merger Agreement in March 2024"</td></tr>
 </table>
 <ol class="steps">
-  <li>Click <span class="btn">Open view E6</span>. Claims are grouped and colored by section: blue Item 1, amber Item 1A, purple Item 7.</li>
-  <li>Answer three questions from the same 31 claims. A sales team asks <i>"Who does Clear Secure compete with today?"</i>: use Item 1. An investor asks <i>"Who could become a competitor?"</i>: use Item 1A. A deal team asks <i>"Who does Clear Secure depend on?"</i>: use Item 7. Those are not competitors at all.</li>
+  <li>Click <span class="btn">Open view E6</span>. Left to right is the filing year; color is the section: blue Item 1, amber Item 1A, red Item 7.</li>
+  <li>Answer three questions from the same 9 claims. An analyst in 2021 asks <i>"Who does JetBlue compete with?"</i>: Spirit, yes. A deal team asks <i>"What did JetBlue try to buy, and what did it cost?"</i>: Item 7 gives $28 million in 2022, $92 million in 2023, then a $532 million write-off. Someone asks today <i>"Is Spirit part of JetBlue?"</i>: no; the merger was blocked and terminated in March 2024.</li>
+  <li>Also try Murphy USA (MUSA) and Walmart: in the same filing, Item 7 calls Walmart the partner whose stores host Murphy USA's stations, and Item 1A calls it a potential competitor with a right of first refusal on Murphy USA's properties.</li>
 </ol>
 <div class="two">
-  <figure><img src="img/15-e6-notebook.jpg" alt="Exercise 6 in the notebook"><figcaption>Claims per section, and what the filing says about each one.</figcaption></figure>
-  <figure><img src="img/15-e6-view.jpg" alt="Exercise 6 view"><figcaption>View E6: one company, 31 "competitor" claims in three color bands by section.</figcaption></figure>
+  <figure><img src="img/15-e6-notebook.jpg" alt="Exercise 6 in the notebook"><figcaption>Exercise 6 in its own tab: what the filings say about Spirit, year by year.</figcaption></figure>
+  <figure><img src="img/15-e6-view.jpg" alt="Exercise 6 view"><figcaption>View E6: JetBlue on the left, Spirit on the right, 9 "competitor" claims by year (left to right) and section (color).</figcaption></figure>
 </div>
-<div class="ask"><b>Discuss:</b> a graph that kept only the edge <code>Clear Secure -COMPETES_WITH-&gt; United Airlines</code> would answer all three questions the same way, and two of them wrong.</div>
+<p><b>Why the extractor called them all competitors:</b> our own prompt asked for <code>competitors</code> with a free-text <code>relationship</code> field and never said what a competitor is. Across the whole graph, only 34% of the 3,145 Item 7 "competitors" are described as competing or rivals (Item 1: 77%, Item 1A: 66%); most of the rest read like partners (851) and acquisitions (401). The quote check in Exercise 1 cannot catch this, so the eval loop needs a second check on meaning.</p>
+<div class="ask"><b>Discuss:</b> a graph that kept only the edge <code>JetBlue -COMPETES_WITH-&gt; Spirit</code> would give all three questions the same answer. Compare Exercise 8: there the name changes over time; here the relationship does.</div>
 
 <h2 id="e7">9. Exercise 7: a category the ontology did not have (dynamic ontology) <span class="muted" style="font-size:15px">(10 min)</span></h2>
 <div class="idea"><b>Idea:</b> the ontology is a lens applied when the question arrives, not a box filled once. Keep the evidence; add or change categories as versions, without re-extracting anything.</div>
@@ -259,8 +263,8 @@
   <tr><td>Mention vs entity</td><td>A mention is a name as written in one filing; an entity is the real-world thing several mentions refer to.</td><td>"Walmart Inc." (mention) &rarr; Walmart (entity).</td></tr>
   <tr><td>Entity resolution</td><td>Deciding which mentions are the same real-world thing.</td><td>Is "AWS" the same as "Amazon"?</td></tr>
   <tr><td>View</td><td>A saved picture of the canvas: nodes, layout, colors.</td><td>CDL E5 &ndash; AWS or Amazon.</td></tr>
-  <tr><td>Recording context (provenance)</td><td>Where, when, by whom and in what words a claim was written. It travels with the claim.</td><td>Clear Secure 10-K 2024, Item 1A, "potential direct competitors".</td></tr>
-  <tr><td>Query context</td><td>Who is asking, and for what purpose. It comes with the question.</td><td>A deal team asking who Clear Secure depends on.</td></tr>
+  <tr><td>Recording context (provenance)</td><td>Where, when, by whom and in what words a claim was written. It travels with the claim.</td><td>JetBlue 10-K 2024, Item 7, "termination of the Merger Agreement in March 2024".</td></tr>
+  <tr><td>Query context</td><td>Who is asking, and for what purpose. It comes with the question.</td><td>Someone asking today whether Spirit Airlines is part of JetBlue.</td></tr>
   <tr><td>Ontology</td><td>The list of kinds of things and links the graph uses.</td><td>The 17 risk categories.</td></tr>
   <tr><td>Dynamic ontology</td><td>Categories defined or changed when the question arrives, as new versions, over evidence that stays the same.</td><td>"Generative AI risk", defined from the risk text in 2026.</td></tr>
   <tr><td>Just-in-time entity resolution</td><td>Deciding whether two names are one thing at question time, using the question and the date.</td><td>Facebook = Meta for "who names Meta?"; apart for "who talks about the Facebook app?".</td></tr>
